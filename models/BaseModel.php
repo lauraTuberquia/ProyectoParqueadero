@@ -1,20 +1,21 @@
 <?php
-require_once 'config/database.php';
+
+
+include_once '../config/database.php'; // Configuración de la base de datos
 
 class BaseModel {
-    protected $db;
-    protected $table;
+    protected $pdo;
 
     public function __construct() {
-        $database = new Database();
-        $this->db = $database->getConnection();
+        global $pdo;
+        $this->pdo = $pdo;
     }
 
-    public function findAll() {
-        $query = "SELECT * FROM {$this->table}";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function query($sql) {
+        return $this->pdo->query($sql);
+    }
+
+    public function prepare($sql) {
+        return $this->pdo->prepare($sql);
     }
 }
-?>
